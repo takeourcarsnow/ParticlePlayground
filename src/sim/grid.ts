@@ -20,7 +20,7 @@ export function neighbors(i:number){
     for(let oy=-1; oy<=1; oy++){
       const key = ((cx+ox)<<16) ^ (cy+oy);
       const list = State.grid.get(key);
-      if(list) for(let j of list){ if(j!==i) res.push(j); }
+      if(list) for(const j of list){ if(j!==i) res.push(j); }
     }
   }
   return res;

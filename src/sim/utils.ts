@@ -47,7 +47,7 @@ export function paletteColor(t:number, name:string){
 export function hash(n:number){ n = (n<<13)^n; return 1.0 - ((n*(n*n*15731 + 789221) + 1376312589) & 0x7fffffff)/1073741824.0; }
 export function noise2D(x:number,y:number){
   const xi = Math.floor(x), yi = Math.floor(y);
-  let xf = x - xi, yf = y - yi;
+  const xf = x - xi, yf = y - yi;
   const s = (t:number)=>t*t*(3-2*t);
   const h = (ix:number,iy:number)=>hash(ix*374761393 + iy*668265263);
   const v00 = h(xi,yi), v10 = h(xi+1,yi), v01 = h(xi,yi+1), v11 = h(xi+1,yi+1);

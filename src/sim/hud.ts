@@ -14,13 +14,16 @@ export function updateHUD(){
   State.hud.colorMode!.textContent = Settings.particles.colorMode;
   State.hud.boundMode!.textContent = Settings.physics.boundaries;
 }
-function cycleSetting(el:HTMLElement|null, path:string[], options:any[], onChange:((next:any)=>void)|null){
+function cycleSetting(el:HTMLElement|null, path:string[], options:unknown[], onChange:((next:unknown)=>void)|null){
   if(!el) return;
   el.addEventListener('click', ()=>{
     if(path.length){
-      let val:any = path.reduce((a:any,k:string)=>a[k], Settings as any);
-      let idx = options.indexOf(val); let next = options[(idx+1)%options.length];
-      let target:any = Settings; for(let i=0;i<path.length-1;i++) target = target[path[i]];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const val = path.reduce((a: any, k: string) => a[k], Settings as any);
+      const idx = options.indexOf(val as unknown);
+      const next = options[(idx + 1) % options.length] as unknown;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let target: any = Settings; for(let i=0;i<path.length-1;i++) target = target[path[i]];
       target[path[path.length-1]] = next;
       if(onChange) onChange(next);
     }else{ if(onChange) onChange(null); }
@@ -30,9 +33,14 @@ function cycleSetting(el:HTMLElement|null, path:string[], options:any[], onChang
   });
   el.title = 'Click to cycle'; (el as HTMLElement).style.cursor='pointer';
 }
-function isFullscreen(){ return !!(document.fullscreenElement || (document as any).webkitFullscreenElement); }
-function requestFullscreen(elem:HTMLElement){ if(elem.requestFullscreen) return elem.requestFullscreen(); return (elem as any).webkitRequestFullscreen?.(); }
-function exitFullscreen(){ if(document.exitFullscreen) return document.exitFullscreen(); return (document as any).webkitExitFullscreen?.(); }
+function isFullscreen(){
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return !!(document.fullscreenElement || (document as any).webkitFullscreenElement);
+}
+function requestFullscreen(elem:HTMLElement){ if(elem.requestFullscreen) return elem.requestFullscreen(); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (elem as any).webkitRequestFullscreen?.(); }
+function exitFullscreen(){ if(document.exitFullscreen) return document.exitFullscreen(); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (document as any).webkitExitFullscreen?.(); }
 function updateFullscreenBtn(){ const btn = State.hud.fullscreenBtn; if(!btn) return; btn.textContent = isFullscreen()? 'Exit Fullscreen':'Fullscreen'; }
 export function initHUD(){
   State.hud.pauseBtn?.addEventListener('click', ()=>{ State.running=!State.running; if(State.hud.pauseBtn) State.hud.pauseBtn.textContent = State.running?'Pause':'Resume'; });

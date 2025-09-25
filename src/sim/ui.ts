@@ -17,8 +17,10 @@ const TABS:TabDef[] = [
   {id:'about', name:'About'}
 ];
 
-function pathGet(obj:any, path:string){ return path.split('.').reduce((o,k)=>o&&o[k], obj); }
-function pathSet(obj:any, path:string, val:any){ const ks = path.split('.'); const last = ks.pop()!; const parent = ks.reduce((o,k)=>o[k], obj); parent[last] = val; }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function pathGet(obj:unknown, path:string){ return path.split('.').reduce((o:any,k)=>o&&o[k], obj); }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function pathSet(obj:unknown, path:string, val:unknown){ const ks = path.split('.'); const last = ks.pop()!; const parent = ks.reduce((o:any,k)=>o[k], obj); parent[last] = val; }
 function group(title:string){ const g=document.createElement('div'); g.className='group'; const h=document.createElement('h3'); h.textContent=title; g.appendChild(h); return g; }
 function ctrlRange(parent:HTMLElement, path:string, label:string, min:number, max:number, step:number, fmtFn:(v:number)=>string=(v)=>String(v), onChange:((v:number)=>void)|null=null){
   const wrap=document.createElement('div'); wrap.className='ctrl'; const lab=document.createElement('label'); lab.textContent=label; const right=document.createElement('div'); right.className='rowline';
@@ -192,14 +194,14 @@ function initHeaderButtons(){
       Settings.particles.radiusMin = rand(1,4);
       Settings.particles.radiusMax = Settings.particles.radiusMin + rand(1,4);
     }
-    Settings.particles.shape = ['circle','square','triangle'][randInt(0,2)] as any;
-    Settings.particles.colorMode = ['solid','velocity','heat'][randInt(0,2)] as any;
-    Settings.particles.palette = ['plasma','cool','fire','aurora'][randInt(0,3)] as any;
-    Settings.particles.blend = ['source-over','lighter','screen','multiply'][randInt(0,3)] as any;
+  Settings.particles.shape = ['circle','square','triangle'][randInt(0,2)] as typeof Settings.particles.shape;
+  Settings.particles.colorMode = ['solid','velocity','heat'][randInt(0,2)] as typeof Settings.particles.colorMode;
+  Settings.particles.palette = ['plasma','cool','fire','aurora'][randInt(0,3)] as typeof Settings.particles.palette;
+  Settings.particles.blend = ['source-over','lighter','screen','multiply'][randInt(0,3)] as typeof Settings.particles.blend;
     Settings.physics.gravity = rand(0,800);
     Settings.physics.airDrag = rand(0.01,0.4);
     Settings.physics.restitution = rand(0.1,0.9);
-    Settings.collisions.mode = ['elastic','soft','inelastic','none'][randInt(0,3)] as any;
+  Settings.collisions.mode = ['elastic','soft','inelastic','none'][randInt(0,3)] as typeof Settings.collisions.mode;
     Settings.forces.turbulenceMode = ['none','flow','curl','vortex','wind','jets','swirlgrid','wells'][randInt(0,7)];
     Settings.forces.amplitude = rand(0,800);
     Settings.forces.scale = rand(0.001,0.008);
@@ -212,14 +214,17 @@ function initHeaderButtons(){
     const names = Object.keys(PRESETS);
     const choice = prompt('Load preset: ' + names.join(', '), 'Marbles');
     if(!choice) return;
-    const presetFn = (PRESETS as any)[choice.trim()];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const presetFn = (PRESETS as Record<string,()=>any>)[choice.trim()];
     if(presetFn){
-      const p = presetFn();
-      Object.keys(p).forEach(section=>{ Object.assign((Settings as any)[section], (p as any)[section]); });
+  const p = presetFn();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Object.keys(p).forEach(section=>{ Object.assign((Settings as any)[section], (p as any)[section]); });
       if(Settings.particles.uniformSize){ Settings.particles.radiusMin = Settings.particles.radiusMax; }
       rebuildParticles(false);
       makeTabs();
     }else{ alert('Preset not found.'); }
   });
 }
-export function initUI(){ (document.body as any).style.background = Settings.visuals.background; State.els.togglePanel?.addEventListener('click',()=> State.els.panel?.classList.toggle('hidden')); makeTabs(); initHeaderButtons(); }
+export function initUI(){ // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (document.body as any).style.background = Settings.visuals.background; State.els.togglePanel?.addEventListener('click',()=> State.els.panel?.classList.toggle('hidden')); makeTabs(); initHeaderButtons(); }

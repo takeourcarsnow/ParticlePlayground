@@ -47,7 +47,7 @@ export function rebuildParticles(keepPositions=false){
   const prev = State.particles.slice(0);
   State.particles.length = 0;
   for(let i=0;i<target;i++){
-    let p = makeParticle();
+    const p = makeParticle();
     if(keepPositions && prev[i]){
       p.x = clamp(prev[i].x, p.r, (State.canvas!.width)/State.DPR - p.r);
       p.y = clamp(prev[i].y, p.r, (State.canvas!.height)/State.DPR - p.r);
