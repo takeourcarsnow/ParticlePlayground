@@ -27,7 +27,7 @@ All DOM ids and structure were replicated in JSX so existing logic (binding by i
 
 ```powershell
 git clone <this-repo>
-cd particles.lt-main
+cd particleslt
 npm install
 npm run dev
 ```
@@ -41,7 +41,7 @@ npm run build
 npm start
 ```
 
-Deploy easily on Vercel (recommended) — `vercel.json` retained for convenience.
+Deploy easily on Vercel (recommended).
 
 ## Controls
 
@@ -60,28 +60,54 @@ Mobile:
 
 ```
 app/
+  compact.css
+  globals.css         # Styles (migrated from original styles.css)
   layout.tsx          # Root layout (imports globals.css)
   page.tsx            # Main simulation page (client component)
-  globals.css         # Styles (migrated from original styles.css)
 src/
-  sim/                # Converted TypeScript simulation modules
-    config.ts
-    state.ts
-    utils.ts
-    particles.ts
-    grid.ts
-    forces.ts
-    renderer.ts
+  components/         # UI components
+    controls.ts
     hud.ts
+    init.ts
+    tabs.ts
     ui.ts
+  sim/                # Converted TypeScript simulation modules
+    config/
+      defaults.ts
+      index.ts
+      presets.ts
+      types.ts
+    main/
+      dom.ts
+      index.ts
+      init.ts
+      loop-performance.ts
+      loop-physics.ts
+      loop-rendering.ts
+      loop.ts
+      resize.ts
+    physics/
+      boundaries.ts
+      collisions.ts
+      forces.ts
+      grid.ts
+      noise.ts
+      turbulence.ts
+      utils.ts
+      wells.ts
+      worker.ts
+    grid.ts
     input.ts
-    main.ts           # startSimulation() bootstrap
-public/
-  favicon.ico (optional placeholder)
+    particles.ts
+    renderer.ts
+    state.ts
+  types/
+    types.ts
+  utils/
+    utils.ts
 package.json
 tsconfig.json
 next.config.mjs
-vercel.json
 README.md
 ```
 
